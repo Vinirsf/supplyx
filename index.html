@@ -23,7 +23,7 @@
     }
 
     /* ===========================
-       DESIGN TOKENS
+       DESIGN TOKENS — DARK (padrão)
     =========================== */
     :root {
       --primary:       #0066FF;
@@ -47,6 +47,97 @@
       --shadow-glow:   0 0 60px rgba(0,102,255,0.2);
       --transition:    all 0.25s cubic-bezier(0.4,0,0.2,1);
     }
+
+    /* ===========================
+       DESIGN TOKENS — LIGHT MODE
+    =========================== */
+    html.light {
+      --bg-deep:       #F0F4FF;
+      --bg-card:       #FFFFFF;
+      --bg-elevated:   #E8EEF8;
+      --border:        rgba(0,0,0,0.08);
+      --border-bright: rgba(0,102,255,0.3);
+      --text-primary:  #0D1526;
+      --text-secondary:#475569;
+      --text-muted:    #94A3B8;
+      --shadow-card:   0 4px 24px rgba(0,0,0,0.10);
+      --shadow-glow:   0 0 60px rgba(0,102,255,0.12);
+    }
+    html.light body { background: var(--bg-deep); color: var(--text-primary); }
+    html.light .notify-strip { background: linear-gradient(90deg, #0052CC 0%, #0066FF 100%); }
+    html.light .header.scrolled { background: rgba(240,244,255,0.92); border-bottom: 1px solid var(--border); }
+    html.light .hero__bg {
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,102,255,0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 85% 50%, rgba(0,212,255,0.06) 0%, transparent 50%);
+    }
+    html.light .hero__grid {
+      background-image:
+        linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+    }
+    html.light .float-card { background: #fff; border-color: rgba(0,0,0,0.08); }
+    html.light .stats-bar { background: #fff; }
+    html.light .logo__text { color: #0D1526; }
+    html.light .nav__link { color: #475569; }
+    html.light .nav__link:hover { color: #0D1526; background: rgba(0,0,0,0.05); }
+    html.light .header__login { color: #475569; }
+    html.light .header__login:hover { color: #0D1526; }
+    html.light .problem__solution {
+      background: linear-gradient(135deg, rgba(0,102,255,0.06) 0%, rgba(0,212,255,0.04) 100%);
+    }
+    html.light .dashboard-bar { background: rgba(0,0,0,0.03); }
+    html.light .dashboard-row { background: rgba(0,0,0,0.03); }
+    html.light .dashboard-content { background: #fff; }
+    html.light .testimonials__logos { border-top-color: var(--border); }
+    html.light .logo-pill { background: var(--bg-elevated); border-color: var(--border); color: #475569; }
+    html.light .footer { background: #E8EEF8; border-top-color: var(--border); }
+    html.light .footer__bottom { border-top-color: var(--border); }
+    html.light .social-icon { background: #fff; border-color: var(--border); color: #475569; }
+    html.light .btn--outline { border-color: rgba(0,0,0,0.15); color: #0D1526; }
+    html.light .btn--outline:hover { border-color: var(--primary); color: var(--primary); background: rgba(0,102,255,0.05); }
+    html.light .cta-box {
+      background: linear-gradient(135deg, rgba(0,102,255,0.08) 0%, rgba(0,212,255,0.05) 100%);
+    }
+    html.light .audience-card--buyer {
+      background: linear-gradient(135deg, rgba(0,102,255,0.08) 0%, rgba(0,212,255,0.05) 100%);
+    }
+    html.light .audience-card--supplier {
+      background: linear-gradient(135deg, rgba(0,200,120,0.08) 0%, rgba(0,212,255,0.05) 100%);
+    }
+
+    /* Smooth theme transition */
+    body, .header, .stats-bar, .float-card, .feature-card,
+    .how__step, .problem__item, .testimonial-card, .faq-item,
+    .audience-card, .footer, .cta-box, .dashboard-preview,
+    .dashboard-row, .logo-pill, .social-icon {
+      transition: background 0.35s ease, border-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    /* ===========================
+       THEME TOGGLE BUTTON
+    =========================== */
+    .theme-toggle {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover {
+      border-color: var(--primary);
+      color: var(--primary-light);
+      background: rgba(0,102,255,0.08);
+    }
+    .theme-toggle svg { width: 18px; height: 18px; }
+    .theme-toggle .icon-moon { display: block; }
+    .theme-toggle .icon-sun  { display: none; }
+    html.light .theme-toggle .icon-moon { display: none; }
+    html.light .theme-toggle .icon-sun  { display: block; }
 
     /* ===========================
        UTILITIES
@@ -872,6 +963,24 @@
         <a href="#testimonials" class="nav__link">Depoimentos</a>
       </nav>
       <div class="header__actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Alternar modo claro/escuro">
+          <!-- Lua: aparece no modo escuro -->
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <!-- Sol: aparece no modo claro -->
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </button>
         <a href="#" class="header__login">Entrar</a>
         <a href="#cta" class="btn btn--primary">
           Cadastrar grátis
@@ -1469,6 +1578,24 @@
        SCRIPTS
   =========================== -->
   <script>
+    // ===========================
+    // THEME TOGGLE
+    // ===========================
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+
+    // Recupera preferência salva ou usa preferência do sistema
+    const saved = localStorage.getItem('supplyx-theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (saved === 'light' || (!saved && !prefersDark)) {
+      html.classList.add('light');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      html.classList.toggle('light');
+      localStorage.setItem('supplyx-theme', html.classList.contains('light') ? 'light' : 'dark');
+    });
+
     // Header scroll effect
     const header = document.getElementById('header');
     window.addEventListener('scroll', () => {
