@@ -13,13 +13,19 @@
        RESET & BASE
     =========================== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      /* Offset para links âncora não ficarem atrás do header fixo */
+      scroll-padding-top: 88px;
+    }
     body {
       font-family: 'Inter', sans-serif;
       background: #0A0D14;
       color: #E8ECF4;
       line-height: 1.6;
       overflow-x: hidden;
+      /* Empurra todo o conteúdo para baixo do header fixo (44px strip + 72px header) */
+      padding-top: 116px;
     }
 
     /* ===========================
@@ -258,7 +264,7 @@
        HEADER
     =========================== */
     .header {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      position: fixed; top: 44px; left: 0; right: 0; z-index: 1000;
       padding: 0 32px;
       transition: var(--transition);
     }
@@ -266,6 +272,9 @@
       background: rgba(10,13,20,0.92);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
+    }
+    html.light .header.scrolled {
+      background: rgba(240,244,255,0.95);
     }
     .header__inner {
       max-width: 1200px; margin: 0 auto;
@@ -316,7 +325,7 @@
     .hero {
       min-height: 100vh;
       display: flex; align-items: center;
-      padding: 140px 0 100px;
+      padding: 60px 0 100px;
       position: relative; overflow: hidden;
     }
     .hero__bg {
@@ -903,9 +912,12 @@
        NOTIFICATION STRIP
     =========================== */
     .notify-strip {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 1001;
       background: linear-gradient(90deg, var(--primary-dark) 0%, #004DB3 100%);
-      padding: 12px 24px; text-align: center;
+      padding: 11px 24px; text-align: center;
       font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.9);
+      height: 44px; display: flex; align-items: center; justify-content: center;
     }
     .notify-strip a {
       color: var(--accent); text-decoration: none; font-weight: 700;
@@ -1596,15 +1608,19 @@
       localStorage.setItem('supplyx-theme', html.classList.contains('light') ? 'light' : 'dark');
     });
 
-    // Header scroll effect
+    // Header scroll effect — desliza para top:0 quando passa a faixa de notificação
     const header = document.getElementById('header');
+    const NOTIFY_H = 44;
+
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 40) {
+      const scrolled = window.scrollY > NOTIFY_H;
+      header.style.top = scrolled ? '0px' : `${NOTIFY_H}px`;
+      if (scrolled) {
         header.classList.add('scrolled');
       } else {
         header.classList.remove('scrolled');
       }
-    });
+    }, { passive: true });
 
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
