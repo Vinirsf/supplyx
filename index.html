@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SupplyX — O Marketplace Industrial que Conecta Indústrias aos Melhores Fornecedores</title>
+  <meta name="description" content="SupplyX é a plataforma B2B que conecta empresas industriais aos fornecedores certos. Encontre insumos, matérias-primas e produtos para produção com rapidez e segurança." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ===========================
+       RESET & BASE
+    =========================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0A0D14;
+      color: #E8ECF4;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ===========================
+       DESIGN TOKENS
+    =========================== */
+    :root {
+      --primary:       #0066FF;
+      --primary-light: #3385FF;
+      --primary-dark:  #0047CC;
+      --accent:        #00D4FF;
+      --accent-glow:   rgba(0, 212, 255, 0.15);
+      --bg-deep:       #0A0D14;
+      --bg-card:       #111520;
+      --bg-elevated:   #161C2E;
+      --border:        rgba(255,255,255,0.08);
+      --border-bright: rgba(0,102,255,0.35);
+      --text-primary:  #F0F4FF;
+      --text-secondary:#94A3B8;
+      --text-muted:    #64748B;
+      --radius-sm:     8px;
+      --radius-md:     14px;
+      --radius-lg:     22px;
+      --radius-xl:     32px;
+      --shadow-card:   0 4px 24px rgba(0,0,0,0.45);
+      --shadow-glow:   0 0 60px rgba(0,102,255,0.2);
+      --transition:    all 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ===========================
+       UTILITIES
+    =========================== */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .container--wide { max-width: 1400px; margin: 0 auto; padding: 0 32px; }
+    .section { padding: 100px 0; }
+    .section--sm { padding: 72px 0; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,102,255,0.12);
+      border: 1px solid rgba(0,102,255,0.3);
+      color: var(--accent);
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 100px;
+    }
+    .badge::before {
+      content: ''; width: 6px; height: 6px;
+      background: var(--accent); border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 12px; font-weight: 500;
+      padding: 4px 10px; border-radius: 6px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #FFFFFF 0%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-text--blue {
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .divider {
+      width: 48px; height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 2px; margin: 20px 0;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+    .text-center { text-align: center; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .gap-2 { gap: 8px; }
+    .gap-3 { gap: 12px; }
+    .gap-4 { gap: 16px; }
+    .mb-2 { margin-bottom: 8px; }
+    .mb-3 { margin-bottom: 12px; }
+    .mb-4 { margin-bottom: 16px; }
+    .mb-6 { margin-bottom: 24px; }
+    .mb-8 { margin-bottom: 32px; }
+    .mb-12 { margin-bottom: 48px; }
+
+    /* ===========================
+       BUTTONS
+    =========================== */
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600; font-size: 15px;
+      padding: 14px 28px; border-radius: var(--radius-md);
+      border: none; cursor: pointer;
+      transition: var(--transition); text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn--primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #0052CC 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(0,102,255,0.4);
+    }
+    .btn--primary:hover {
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+      box-shadow: 0 8px 32px rgba(0,102,255,0.6);
+      transform: translateY(-2px);
+    }
+    .btn--outline {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1.5px solid var(--border);
+    }
+    .btn--outline:hover {
+      border-color: var(--primary);
+      color: var(--primary-light);
+      background: rgba(0,102,255,0.06);
+    }
+    .btn--accent {
+      background: linear-gradient(135deg, var(--accent) 0%, #007ACC 100%);
+      color: #0A0D14; font-weight: 700;
+      box-shadow: 0 4px 20px rgba(0,212,255,0.35);
+    }
+    .btn--accent:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0,212,255,0.55);
+    }
+    .btn--lg { padding: 18px 36px; font-size: 16px; }
+    .btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ===========================
+       HEADER
+    =========================== */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 32px;
+      transition: var(--transition);
+    }
+    .header.scrolled {
+      background: rgba(10,13,20,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header__inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .logo__mark {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 16px; color: #fff;
+      font-family: 'Manrope', sans-serif;
+      box-shadow: 0 4px 14px rgba(0,102,255,0.45);
+    }
+    .logo__text {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800; font-size: 22px;
+      color: var(--text-primary); letter-spacing: -0.03em;
+    }
+    .logo__text span { color: var(--accent); }
+
+    .nav { display: flex; align-items: center; gap: 4px; }
+    .nav__link {
+      color: var(--text-secondary); text-decoration: none;
+      font-size: 14px; font-weight: 500;
+      padding: 8px 16px; border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .nav__link:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+
+    .header__actions { display: flex; align-items: center; gap: 12px; }
+    .header__login {
+      color: var(--text-secondary); text-decoration: none;
+      font-size: 14px; font-weight: 500;
+      padding: 8px 16px; border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .header__login:hover { color: var(--text-primary); }
+
+    /* ===========================
+       HERO
+    =========================== */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 140px 0 100px;
+      position: relative; overflow: hidden;
+    }
+    .hero__bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,102,255,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 85% 50%, rgba(0,212,255,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 40% at 10% 80%, rgba(0,102,255,0.1) 0%, transparent 50%);
+    }
+    .hero__grid {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+    .hero__inner {
+      position: relative; z-index: 1;
+      text-align: center; max-width: 860px; margin: 0 auto;
+    }
+    .hero__badge { margin-bottom: 28px; }
+    .hero__headline {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(42px, 6vw, 76px);
+      font-weight: 800; line-height: 1.08;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+    }
+    .hero__sub {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 620px; margin: 0 auto 40px;
+    }
+    .hero__ctas {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; flex-wrap: wrap; margin-bottom: 64px;
+    }
+    .hero__trust {
+      display: flex; align-items: center; justify-content: center;
+      gap: 32px; flex-wrap: wrap;
+    }
+    .hero__trust-item {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--text-muted); font-size: 13px;
+    }
+    .hero__trust-item svg { color: var(--accent); width: 16px; height: 16px; }
+
+    /* Floating cards */
+    .hero__floats {
+      position: absolute; inset: 0; z-index: 0;
+      pointer-events: none;
+    }
+    .float-card {
+      position: absolute;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      font-size: 13px; font-weight: 500;
+      color: var(--text-secondary);
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: var(--shadow-card);
+      animation: float 6s ease-in-out infinite;
+    }
+    .float-card--1 { top: 18%; left: 4%; animation-delay: 0s; }
+    .float-card--2 { top: 28%; right: 4%; animation-delay: -2s; }
+    .float-card--3 { bottom: 22%; left: 6%; animation-delay: -4s; }
+    .float-card--4 { bottom: 28%; right: 5%; animation-delay: -1s; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    .float-card__icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .float-card__icon--blue { background: rgba(0,102,255,0.15); }
+    .float-card__icon--green { background: rgba(0,200,120,0.15); }
+    .float-card__icon--cyan { background: rgba(0,212,255,0.15); }
+    .float-card__icon--yellow { background: rgba(255,180,0,0.15); }
+    .float-card strong { color: var(--text-primary); }
+
+    /* ===========================
+       STATS BAR
+    =========================== */
+    .stats-bar {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+      padding: 40px 0;
+    }
+    .stats-bar__inner {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+    .stat {
+      text-align: center;
+      padding: 0 20px;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat__value {
+      font-family: 'Manrope', sans-serif;
+      font-size: 42px; font-weight: 800;
+      letter-spacing: -0.04em; line-height: 1;
+      background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+    }
+    .stat__label {
+      font-size: 14px; color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* ===========================
+       PROBLEM SECTION
+    =========================== */
+    .problem {
+      background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-card) 100%);
+    }
+    .problem__header { max-width: 640px; }
+    .problem__grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-top: 48px;
+    }
+    .problem__item {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      display: flex; gap: 16px; align-items: flex-start;
+      transition: var(--transition);
+    }
+    .problem__item:hover {
+      border-color: rgba(255,70,70,0.3);
+      background: rgba(255,70,70,0.04);
+    }
+    .problem__icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: rgba(255,70,70,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .problem__title { font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+    .problem__desc { font-size: 14px; color: var(--text-secondary); }
+    .problem__solution {
+      margin-top: 56px;
+      background: linear-gradient(135deg, rgba(0,102,255,0.08) 0%, rgba(0,212,255,0.06) 100%);
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      display: flex; align-items: center; gap: 40px;
+    }
+    .problem__solution-text h3 {
+      font-family: 'Manrope', sans-serif;
+      font-size: 28px; font-weight: 800;
+      letter-spacing: -0.03em; color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .problem__solution-text p { color: var(--text-secondary); line-height: 1.7; }
+    .problem__solution-icon {
+      width: 80px; height: 80px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+      box-shadow: 0 8px 32px rgba(0,102,255,0.4);
+    }
+
+    /* ===========================
+       HOW IT WORKS
+    =========================== */
+    .how { background: var(--bg-deep); }
+    .how__steps {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 32px; margin-top: 60px; position: relative;
+    }
+    .how__steps::before {
+      content: '';
+      position: absolute; top: 40px; left: calc(16.66% + 24px); right: calc(16.66% + 24px);
+      height: 1px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      z-index: 0;
+    }
+    .how__step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      text-align: center;
+      position: relative; z-index: 1;
+      transition: var(--transition);
+    }
+    .how__step:hover {
+      border-color: var(--border-bright);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-glow);
+    }
+    .how__step-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff; font-family: 'Manrope', sans-serif;
+      font-weight: 800; font-size: 20px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px;
+      box-shadow: 0 4px 20px rgba(0,102,255,0.4);
+    }
+    .how__step-icon { font-size: 32px; margin-bottom: 16px; }
+    .how__step h3 {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700; font-size: 20px;
+      color: var(--text-primary); margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+    .how__step p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* ===========================
+       FEATURES
+    =========================== */
+    .features { background: var(--bg-card); }
+    .features__header { max-width: 640px; margin: 0 auto; text-align: center; }
+    .features__grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; margin-top: 64px;
+    }
+    .feature-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: var(--transition);
+      position: relative; overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      opacity: 0; transition: var(--transition);
+    }
+    .feature-card:hover { border-color: var(--border-bright); transform: translateY(-4px); }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-card__icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: rgba(0,102,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 20px;
+    }
+    .feature-card h3 {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700; font-size: 18px;
+      color: var(--text-primary); margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+    .feature-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+
+    /* ===========================
+       BENEFITS
+    =========================== */
+    .benefits { background: var(--bg-deep); }
+    .benefits__inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .benefits__label { font-size: 13px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
+    .benefits__heading {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(30px, 3.5vw, 46px); font-weight: 800;
+      letter-spacing: -0.04em; color: var(--text-primary);
+      line-height: 1.12; margin-bottom: 24px;
+    }
+    .benefits__desc { color: var(--text-secondary); line-height: 1.7; margin-bottom: 36px; }
+    .benefits__list { display: flex; flex-direction: column; gap: 16px; }
+    .benefit-item {
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .benefit-item__check {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(0,200,120,0.15);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+      color: #00C878; font-size: 12px;
+    }
+    .benefit-item__text strong { display: block; color: var(--text-primary); font-weight: 600; margin-bottom: 2px; }
+    .benefit-item__text span { font-size: 14px; color: var(--text-secondary); }
+
+    .benefits__visual {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      position: relative;
+    }
+    .dashboard-preview {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .dashboard-bar {
+      background: rgba(255,255,255,0.04);
+      padding: 10px 16px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot--r { background: #FF5F57; }
+    .dot--y { background: #FFBD2E; }
+    .dot--g { background: #28C840; }
+    .dashboard-content { padding: 20px; }
+    .dashboard-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px; border-radius: var(--radius-sm);
+      margin-bottom: 8px; background: rgba(255,255,255,0.03);
+    }
+    .dashboard-row:last-child { margin-bottom: 0; }
+    .dashboard-row__info { display: flex; align-items: center; gap: 12px; }
+    .dashboard-row__avatar {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
+    }
+    .dashboard-row__name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .dashboard-row__cat { font-size: 11px; color: var(--text-muted); }
+    .dashboard-row__price { font-size: 14px; font-weight: 700; color: #00C878; }
+    .dashboard-row__badge {
+      font-size: 10px; font-weight: 600; padding: 2px 8px;
+      border-radius: 4px; text-transform: uppercase;
+    }
+    .badge--green { background: rgba(0,200,120,0.15); color: #00C878; }
+    .badge--blue { background: rgba(0,102,255,0.15); color: var(--primary-light); }
+    .badge--yellow { background: rgba(255,180,0,0.15); color: #FFB400; }
+
+    /* ===========================
+       FOR WHOM
+    =========================== */
+    .audience { background: var(--bg-card); }
+    .audience__header { max-width: 580px; margin: 0 auto; text-align: center; }
+    .audience__cards {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 32px; margin-top: 60px;
+    }
+    .audience-card {
+      border-radius: var(--radius-xl);
+      padding: 48px 40px;
+      position: relative; overflow: hidden;
+    }
+    .audience-card--buyer {
+      background: linear-gradient(135deg, rgba(0,102,255,0.15) 0%, rgba(0,212,255,0.08) 100%);
+      border: 1px solid rgba(0,102,255,0.25);
+    }
+    .audience-card--supplier {
+      background: linear-gradient(135deg, rgba(0,200,120,0.12) 0%, rgba(0,212,255,0.08) 100%);
+      border: 1px solid rgba(0,200,120,0.22);
+    }
+    .audience-card__emoji { font-size: 48px; margin-bottom: 20px; display: block; }
+    .audience-card h3 {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800; font-size: 24px;
+      color: var(--text-primary); letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    .audience-card p { color: var(--text-secondary); line-height: 1.7; margin-bottom: 28px; }
+    .audience-card__list {
+      list-style: none; display: flex; flex-direction: column; gap: 10px;
+    }
+    .audience-card__list li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; color: var(--text-secondary);
+    }
+    .audience-card__list li::before {
+      content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0;
+    }
+
+    /* ===========================
+       TESTIMONIALS
+    =========================== */
+    .testimonials { background: var(--bg-deep); }
+    .testimonials__header { max-width: 600px; margin: 0 auto; text-align: center; }
+    .testimonials__grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; margin-top: 60px;
+    }
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: var(--transition);
+    }
+    .testimonial-card:hover {
+      border-color: var(--border-bright);
+      transform: translateY(-4px);
+    }
+    .testimonial-card__stars { color: #FFB400; font-size: 16px; margin-bottom: 16px; letter-spacing: 2px; }
+    .testimonial-card__text {
+      font-size: 15px; color: var(--text-secondary);
+      line-height: 1.7; font-style: italic;
+      margin-bottom: 24px;
+    }
+    .testimonial-card__author { display: flex; align-items: center; gap: 12px; }
+    .testimonial-card__avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; color: #fff; font-size: 16px;
+    }
+    .testimonial-card__name { font-weight: 600; color: var(--text-primary); font-size: 14px; }
+    .testimonial-card__role { font-size: 12px; color: var(--text-muted); }
+    .testimonials__logos {
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .testimonials__logos p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .logos-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 48px; flex-wrap: wrap;
+    }
+    .logo-pill {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 24px;
+      font-weight: 700; font-size: 14px;
+      color: var(--text-muted); letter-spacing: 0.05em;
+    }
+
+    /* ===========================
+       OBJECTIONS / FAQ
+    =========================== */
+    .faq { background: var(--bg-card); }
+    .faq__header { max-width: 580px; margin: 0 auto; text-align: center; }
+    .faq__grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-top: 60px; max-width: 960px; margin-left: auto; margin-right: auto;
+    }
+    .faq-item {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      transition: var(--transition);
+    }
+    .faq-item:hover { border-color: var(--border-bright); }
+    .faq-item h4 {
+      font-weight: 700; color: var(--text-primary);
+      font-size: 15px; margin-bottom: 10px;
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .faq-item h4::before {
+      content: '?';
+      width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(0,102,255,0.15); color: var(--primary-light);
+      font-size: 12px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .faq-item p { font-size: 14px; color: var(--text-secondary); line-height: 1.65; padding-left: 32px; }
+
+    /* ===========================
+       CTA SECTION
+    =========================== */
+    .cta-section {
+      background: var(--bg-deep);
+      padding: 120px 0;
+    }
+    .cta-box {
+      background: linear-gradient(135deg, rgba(0,102,255,0.12) 0%, rgba(0,212,255,0.08) 100%);
+      border: 1px solid var(--border-bright);
+      border-radius: 28px;
+      padding: 80px 60px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-box::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,102,255,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-box__eyebrow {
+      font-size: 13px; font-weight: 600; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 20px;
+    }
+    .cta-box__heading {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(32px, 4vw, 56px); font-weight: 800;
+      letter-spacing: -0.04em; color: var(--text-primary);
+      line-height: 1.1; margin-bottom: 20px;
+    }
+    .cta-box__sub {
+      font-size: 18px; color: var(--text-secondary);
+      max-width: 540px; margin: 0 auto 44px; line-height: 1.6;
+    }
+    .cta-box__actions {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; flex-wrap: wrap; margin-bottom: 36px;
+    }
+    .cta-box__reassurance {
+      display: flex; align-items: center; justify-content: center;
+      gap: 24px; flex-wrap: wrap;
+      font-size: 13px; color: var(--text-muted);
+    }
+    .cta-box__reassurance span {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .cta-box__reassurance svg { width: 14px; height: 14px; color: #00C878; }
+
+    /* ===========================
+       FOOTER
+    =========================== */
+    .footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      padding: 72px 0 40px;
+    }
+    .footer__grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; margin-bottom: 56px;
+    }
+    .footer__brand p {
+      font-size: 14px; color: var(--text-muted); line-height: 1.7;
+      margin-top: 16px; max-width: 280px;
+    }
+    .footer__socials { display: flex; gap: 12px; margin-top: 20px; }
+    .social-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); font-size: 14px;
+      text-decoration: none; transition: var(--transition);
+    }
+    .social-icon:hover { border-color: var(--primary); color: var(--primary-light); }
+    .footer__col h4 {
+      font-weight: 700; font-size: 13px; color: var(--text-primary);
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 20px;
+    }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a {
+      font-size: 14px; color: var(--text-muted); text-decoration: none;
+      transition: var(--transition);
+    }
+    .footer__links a:hover { color: var(--text-secondary); }
+    .footer__bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer__bottom p { font-size: 13px; color: var(--text-muted); }
+    .footer__bottom-links { display: flex; gap: 24px; }
+    .footer__bottom-links a {
+      font-size: 13px; color: var(--text-muted); text-decoration: none;
+      transition: var(--transition);
+    }
+    .footer__bottom-links a:hover { color: var(--text-secondary); }
+
+    /* ===========================
+       SECTION HEADINGS
+    =========================== */
+    .section-eyebrow {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+    }
+    .section-heading {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 800; letter-spacing: -0.04em;
+      color: var(--text-primary); line-height: 1.12;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: clamp(15px, 1.5vw, 18px);
+      color: var(--text-secondary); line-height: 1.7;
+    }
+
+    /* ===========================
+       NOTIFICATION STRIP
+    =========================== */
+    .notify-strip {
+      background: linear-gradient(90deg, var(--primary-dark) 0%, #004DB3 100%);
+      padding: 12px 24px; text-align: center;
+      font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.9);
+    }
+    .notify-strip a {
+      color: var(--accent); text-decoration: none; font-weight: 700;
+      margin-left: 8px;
+    }
+    .notify-strip a:hover { text-decoration: underline; }
+
+    /* ===========================
+       RESPONSIVE
+    =========================== */
+    @media (max-width: 1024px) {
+      .hero__floats { display: none; }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .features__grid { grid-template-columns: repeat(2, 1fr); }
+      .footer__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+    @media (max-width: 768px) {
+      .section { padding: 72px 0; }
+      .header .nav { display: none; }
+      .grid-2, .grid-3, .problem__grid, .how__steps,
+      .audience__cards, .testimonials__grid, .faq__grid,
+      .benefits__inner, .stats-bar__inner { grid-template-columns: 1fr; }
+      .how__steps::before { display: none; }
+      .stat { border-right: none; border-bottom: 1px solid var(--border); padding: 20px 0; }
+      .stat:last-child { border-bottom: none; }
+      .features__grid { grid-template-columns: 1fr; }
+      .cta-box { padding: 48px 28px; }
+      .footer__grid { grid-template-columns: 1fr; }
+      .footer__bottom { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NOTIFICATION STRIP -->
+  <div class="notify-strip">
+    🚀 SupplyX está em fase de lançamento — cadastre-se agora e garanta acesso antecipado
+    <a href="#cta">Quero participar →</a>
+  </div>
+
+  <!-- ===========================
+       HEADER
+  =========================== -->
+  <header class="header" id="header">
+    <div class="header__inner">
+      <a href="#" class="logo">
+        <div class="logo__mark">SX</div>
+        <span class="logo__text">Supply<span>X</span></span>
+      </a>
+      <nav class="nav">
+        <a href="#how" class="nav__link">Como funciona</a>
+        <a href="#features" class="nav__link">Plataforma</a>
+        <a href="#audience" class="nav__link">Para quem</a>
+        <a href="#faq" class="nav__link">FAQ</a>
+        <a href="#testimonials" class="nav__link">Depoimentos</a>
+      </nav>
+      <div class="header__actions">
+        <a href="#" class="header__login">Entrar</a>
+        <a href="#cta" class="btn btn--primary">
+          Cadastrar grátis
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===========================
+       HERO
+  =========================== -->
+  <section class="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__grid"></div>
+
+    <!-- Floating Cards -->
+    <div class="hero__floats">
+      <div class="float-card float-card--1">
+        <div class="float-card__icon float-card__icon--blue">🏭</div>
+        <div>
+          <strong>Aço Inoxidável 316</strong><br>
+          <span style="font-size:11px;color:var(--text-muted)">47 fornecedores disponíveis</span>
+        </div>
+      </div>
+      <div class="float-card float-card--2">
+        <div class="float-card__icon float-card__icon--green">✅</div>
+        <div>
+          <strong>Pedido confirmado</strong><br>
+          <span style="font-size:11px;color:var(--text-muted)">Entrega em 48h · R$ 12.400</span>
+        </div>
+      </div>
+      <div class="float-card float-card--3">
+        <div class="float-card__icon float-card__icon--cyan">🔍</div>
+        <div>
+          <strong>Busca inteligente</strong><br>
+          <span style="font-size:11px;color:var(--text-muted)">+2.000 categorias indexadas</span>
+        </div>
+      </div>
+      <div class="float-card float-card--4">
+        <div class="float-card__icon float-card__icon--yellow">⚡</div>
+        <div>
+          <strong>Cotação em minutos</strong><br>
+          <span style="font-size:11px;color:var(--text-muted)">Receba até 5 propostas</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="hero__inner">
+        <div class="hero__badge">
+          <span class="badge">Marketplace Industrial B2B</span>
+        </div>
+        <h1 class="hero__headline">
+          O insumo que você precisa,<br/>
+          <span class="gradient-text">exatamente onde você está.</span>
+        </h1>
+        <p class="hero__sub">
+          SupplyX é a plataforma que conecta indústrias, fabricantes e compradores corporativos
+          aos melhores fornecedores do mercado — com agilidade, transparência e total controle
+          sobre cada compra.
+        </p>
+        <div class="hero__ctas">
+          <a href="#cta" class="btn btn--primary btn--lg">
+            Começar agora — é grátis
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#how" class="btn btn--outline btn--lg">
+            Ver como funciona
+          </a>
+        </div>
+        <div class="hero__trust">
+          <div class="hero__trust-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Cadastro gratuito
+          </div>
+          <div class="hero__trust-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Sem burocracia
+          </div>
+          <div class="hero__trust-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Compras 100% seguras
+          </div>
+          <div class="hero__trust-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Suporte especializado
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       STATS BAR
+  =========================== -->
+  <div class="stats-bar">
+    <div class="container">
+      <div class="stats-bar__inner">
+        <div class="stat">
+          <div class="stat__value">+5.000</div>
+          <div class="stat__label">Fornecedores cadastrados</div>
+        </div>
+        <div class="stat">
+          <div class="stat__value">+2.000</div>
+          <div class="stat__label">Categorias de insumos</div>
+        </div>
+        <div class="stat">
+          <div class="stat__value">48h</div>
+          <div class="stat__label">Tempo médio para cotação</div>
+        </div>
+        <div class="stat">
+          <div class="stat__value">98%</div>
+          <div class="stat__label">Taxa de satisfação dos clientes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===========================
+       PROBLEM SECTION
+  =========================== -->
+  <section class="section problem" id="problem">
+    <div class="container">
+      <div class="problem__header">
+        <div class="section-eyebrow">O problema real</div>
+        <h2 class="section-heading">Encontrar insumos para produção não deveria ser tão difícil.</h2>
+        <p class="section-sub">Mas sabemos que é. Toda indústria já enfrentou ao menos um desses cenários — e o custo é alto demais para ignorar.</p>
+      </div>
+      <div class="problem__grid">
+        <div class="problem__item">
+          <div class="problem__icon">⏳</div>
+          <div>
+            <div class="problem__title">Horas perdidas em buscas sem resultado</div>
+            <div class="problem__desc">Equipes inteiras navegando por sites desatualizados, ligando para fornecedores que não têm estoque ou que demoram dias para responder.</div>
+          </div>
+        </div>
+        <div class="problem__item">
+          <div class="problem__icon">💸</div>
+          <div>
+            <div class="problem__title">Preços não competitivos por falta de comparação</div>
+            <div class="problem__desc">Sem acesso a múltiplos fornecedores ao mesmo tempo, as empresas aceitam o primeiro preço que aparece — geralmente acima do mercado.</div>
+          </div>
+        </div>
+        <div class="problem__item">
+          <div class="problem__icon">🔗</div>
+          <div>
+            <div class="problem__title">Fornecedores desconhecidos e sem garantia</div>
+            <div class="problem__desc">Trabalhar com fornecedores não verificados gera risco de qualidade, atrasos na entrega e problemas que param a linha de produção.</div>
+          </div>
+        </div>
+        <div class="problem__item">
+          <div class="problem__icon">📋</div>
+          <div>
+            <div class="problem__title">Processo de compras completamente manual</div>
+            <div class="problem__desc">E-mails, planilhas e ligações telefônicas ainda dominam o processo de compras industrial — gerando erros, retrabalho e falta de rastreabilidade.</div>
+          </div>
+        </div>
+      </div>
+      <div class="problem__solution">
+        <div class="problem__solution-icon">🔧</div>
+        <div class="problem__solution-text">
+          <h3>SupplyX resolve tudo isso em um só lugar.</h3>
+          <p>Uma plataforma projetada especificamente para o universo industrial, que centraliza fornecedores verificados, automatiza cotações e entrega a transparência que sua operação precisa para crescer com segurança.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       HOW IT WORKS
+  =========================== -->
+  <section class="section how" id="how">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-eyebrow">Como funciona</div>
+        <h2 class="section-heading">Do pedido ao fornecedor em<br/><span class="gradient-text--blue">menos de 3 passos.</span></h2>
+        <p class="section-sub" style="max-width:520px;margin:0 auto;">Sem complicação, sem burocracia. Você foca na produção — nós cuidamos do abastecimento.</p>
+      </div>
+      <div class="how__steps">
+        <div class="how__step">
+          <div class="how__step-num">1</div>
+          <div class="how__step-icon">🔍</div>
+          <h3>Busque o que precisa</h3>
+          <p>Use nossa busca inteligente para encontrar qualquer insumo, matéria-prima ou produto industrial. Filtre por categoria, localidade, prazo e muito mais.</p>
+        </div>
+        <div class="how__step">
+          <div class="how__step-num">2</div>
+          <div class="how__step-icon">⚡</div>
+          <h3>Receba cotações em horas</h3>
+          <p>Solicite propostas de múltiplos fornecedores verificados simultaneamente. Compare preços, condições e avaliações em um painel centralizado.</p>
+        </div>
+        <div class="how__step">
+          <div class="how__step-num">3</div>
+          <div class="how__step-icon">✅</div>
+          <h3>Compre com segurança</h3>
+          <p>Escolha a melhor oferta, feche o pedido direto na plataforma e acompanhe tudo em tempo real. Pagamento protegido e entrega garantida.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       FEATURES
+  =========================== -->
+  <section class="section features" id="features">
+    <div class="container">
+      <div class="features__header">
+        <div class="section-eyebrow">A plataforma</div>
+        <h2 class="section-heading">Construída para a indústria.<br/>Simples como um e-commerce.</h2>
+        <p class="section-sub">Cada funcionalidade foi desenhada para eliminar a fricção no processo de compras industrial.</p>
+      </div>
+      <div class="features__grid">
+        <div class="feature-card">
+          <div class="feature-card__icon">🔍</div>
+          <h3>Busca Inteligente</h3>
+          <p>Motor de busca especializado em produtos industriais e insumos. Encontre por nome técnico, código, especificação ou categoria — com resultados relevantes em segundos.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">🤝</div>
+          <h3>Fornecedores Verificados</h3>
+          <p>Todos os fornecedores passam por processo de verificação cadastral e reputacional. Você compra sabendo exatamente com quem está negociando.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">📊</div>
+          <h3>Cotação Múltipla</h3>
+          <p>Solicite propostas de até 5 fornecedores ao mesmo tempo com um único clique. Comparação automática e painel centralizado para decisão rápida.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">🔒</div>
+          <h3>Pagamento Protegido</h3>
+          <p>Sistema de escrow integrado que libera o pagamento ao fornecedor somente após a confirmação do recebimento. Zero risco de golpe ou produto diferente do anunciado.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">📦</div>
+          <h3>Rastreamento em Tempo Real</h3>
+          <p>Acompanhe o status de cada pedido, da confirmação à entrega, diretamente no painel. Notificações automáticas para todas as etapas do processo.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">📈</div>
+          <h3>Gestão de Compras</h3>
+          <p>Histórico completo de pedidos, relatórios de gastos, controle de fornecedores favoritos e análise de desempenho para otimizar continuamente seus custos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       BENEFITS
+  =========================== -->
+  <section class="section benefits" id="benefits">
+    <div class="container">
+      <div class="benefits__inner">
+        <div>
+          <div class="benefits__label">Por que SupplyX</div>
+          <h2 class="benefits__heading">Mais agilidade. Menos custo.<br/>Produção sem parar.</h2>
+          <p class="benefits__desc">Empresas que usam SupplyX reduzem até 60% do tempo gasto no processo de compras e encontram preços até 25% mais competitivos do que em negociações tradicionais.</p>
+          <div class="benefits__list">
+            <div class="benefit-item">
+              <div class="benefit-item__check">✓</div>
+              <div class="benefit-item__text">
+                <strong>Reduza o tempo de compra em até 60%</strong>
+                <span>Automatize cotações e elimine processos manuais que consomem horas da sua equipe.</span>
+              </div>
+            </div>
+            <div class="benefit-item">
+              <div class="benefit-item__check">✓</div>
+              <div class="benefit-item__text">
+                <strong>Acesse preços mais competitivos</strong>
+                <span>Compare múltiplos fornecedores em tempo real e sempre negocie com vantagem.</span>
+              </div>
+            </div>
+            <div class="benefit-item">
+              <div class="benefit-item__check">✓</div>
+              <div class="benefit-item__text">
+                <strong>Compre com total rastreabilidade</strong>
+                <span>Cada pedido documentado, auditável e com histórico completo para controle interno.</span>
+              </div>
+            </div>
+            <div class="benefit-item">
+              <div class="benefit-item__check">✓</div>
+              <div class="benefit-item__text">
+                <strong>Escale sem aumentar a equipe de compras</strong>
+                <span>Nossa plataforma cuida da operação para você poder focar no crescimento.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="benefits__visual">
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">Painel SupplyX</div>
+          <div class="dashboard-preview">
+            <div class="dashboard-bar">
+              <span class="dot dot--r"></span>
+              <span class="dot dot--y"></span>
+              <span class="dot dot--g"></span>
+              <span style="font-size:12px;color:var(--text-muted);margin-left:8px;">Pedidos Recentes</span>
+            </div>
+            <div class="dashboard-content">
+              <div class="dashboard-row">
+                <div class="dashboard-row__info">
+                  <div class="dashboard-row__avatar" style="background:rgba(0,102,255,0.1)">🔩</div>
+                  <div>
+                    <div class="dashboard-row__name">Parafusos M8 Inox</div>
+                    <div class="dashboard-row__cat">Fixação · Metalurgia</div>
+                  </div>
+                </div>
+                <div style="text-align:right">
+                  <div class="dashboard-row__price">R$ 4.200</div>
+                  <span class="dashboard-row__badge badge--green">Entregue</span>
+                </div>
+              </div>
+              <div class="dashboard-row">
+                <div class="dashboard-row__info">
+                  <div class="dashboard-row__avatar" style="background:rgba(0,200,120,0.1)">🧪</div>
+                  <div>
+                    <div class="dashboard-row__name">Resina Epóxi 500kg</div>
+                    <div class="dashboard-row__cat">Químicos · Produção</div>
+                  </div>
+                </div>
+                <div style="text-align:right">
+                  <div class="dashboard-row__price">R$ 18.700</div>
+                  <span class="dashboard-row__badge badge--blue">Em trânsito</span>
+                </div>
+              </div>
+              <div class="dashboard-row">
+                <div class="dashboard-row__info">
+                  <div class="dashboard-row__avatar" style="background:rgba(255,180,0,0.1)">⚙️</div>
+                  <div>
+                    <div class="dashboard-row__name">Rolamentos 6205</div>
+                    <div class="dashboard-row__cat">Mecânica · Manutenção</div>
+                  </div>
+                </div>
+                <div style="text-align:right">
+                  <div class="dashboard-row__price">R$ 3.850</div>
+                  <span class="dashboard-row__badge badge--yellow">Cotação</span>
+                </div>
+              </div>
+              <div class="dashboard-row">
+                <div class="dashboard-row__info">
+                  <div class="dashboard-row__avatar" style="background:rgba(0,212,255,0.1)">🏗️</div>
+                  <div>
+                    <div class="dashboard-row__name">Perfil de Alumínio 40x40</div>
+                    <div class="dashboard-row__cat">Estruturas · Construção</div>
+                  </div>
+                </div>
+                <div style="text-align:right">
+                  <div class="dashboard-row__price">R$ 9.100</div>
+                  <span class="dashboard-row__badge badge--green">Entregue</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:16px;padding:14px;background:rgba(0,200,120,0.08);border:1px solid rgba(0,200,120,0.2);border-radius:10px;font-size:13px;color:var(--text-secondary);display:flex;align-items:center;gap:10px;">
+            <span style="color:#00C878;font-size:18px">↓</span>
+            <span>Você economizou <strong style="color:#00C878">R$ 6.240</strong> este mês comparado ao mês anterior</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       FOR WHOM
+  =========================== -->
+  <section class="section audience" id="audience">
+    <div class="container">
+      <div class="audience__header">
+        <div class="section-eyebrow">Para quem é</div>
+        <h2 class="section-heading">Dois lados de um ecossistema poderoso.</h2>
+        <p class="section-sub">SupplyX funciona para quem compra e para quem vende. Todos se beneficiam.</p>
+      </div>
+      <div class="audience__cards">
+        <div class="audience-card audience-card--buyer">
+          <span class="audience-card__emoji">🏭</span>
+          <h3>Para Empresas Compradoras</h3>
+          <p>Indústrias, fabricantes e empresas que precisam abastecer sua linha de produção com eficiência, previsibilidade e custo controlado.</p>
+          <ul class="audience-card__list">
+            <li>Acesso a +5.000 fornecedores verificados</li>
+            <li>Cotação múltipla com 1 clique</li>
+            <li>Histórico e relatórios de compras</li>
+            <li>Pagamento protegido e seguro</li>
+            <li>Suporte técnico especializado</li>
+          </ul>
+        </div>
+        <div class="audience-card audience-card--supplier">
+          <span class="audience-card__emoji">🚚</span>
+          <h3>Para Fornecedores</h3>
+          <p>Distribuidores, fabricantes e atacadistas que querem expandir sua carteira de clientes B2B e vender mais com menos esforço de prospecção.</p>
+          <ul class="audience-card__list">
+            <li>Visibilidade para milhares de empresas</li>
+            <li>Solicitações de cotação automáticas</li>
+            <li>Recebimento garantido pela plataforma</li>
+            <li>Painel de gestão de pedidos</li>
+            <li>Avaliações que constroem reputação</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       TESTIMONIALS
+  =========================== -->
+  <section class="section testimonials" id="testimonials">
+    <div class="container">
+      <div class="testimonials__header">
+        <div class="section-eyebrow">Depoimentos</div>
+        <h2 class="section-heading">Quem já usa não volta atrás.</h2>
+        <p class="section-sub">Histórias reais de empresas que transformaram seu processo de compras com SupplyX.</p>
+      </div>
+      <div class="testimonials__grid">
+        <div class="testimonial-card">
+          <div class="testimonial-card__stars">★★★★★</div>
+          <p class="testimonial-card__text">"Antes, minha equipe passava 2 dias inteiros buscando fornecedores de matéria-prima. Com SupplyX, fazemos isso em 20 minutos. A diferença é absurda."</p>
+          <div class="testimonial-card__author">
+            <div class="testimonial-card__avatar">RC</div>
+            <div>
+              <div class="testimonial-card__name">Roberto Carvalho</div>
+              <div class="testimonial-card__role">Gerente de Compras · Metalúrgica Carvalho</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-card__stars">★★★★★</div>
+          <p class="testimonial-card__text">"Conseguimos uma economia de quase 22% nos custos de insumos no primeiro trimestre. A concorrência de fornecedores dentro da plataforma é real e joga a nosso favor."</p>
+          <div class="testimonial-card__author">
+            <div class="testimonial-card__avatar">AF</div>
+            <div>
+              <div class="testimonial-card__name">Ana Ferreira</div>
+              <div class="testimonial-card__role">Diretora Industrial · Plásticos do Sul</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-card__stars">★★★★★</div>
+          <p class="testimonial-card__text">"Como fornecedor, a plataforma me trouxe clientes que eu nunca alcançaria sozinho. Em 60 dias, já tinha 3 novos contratos recorrentes. Recomendo sem hesitar."</p>
+          <div class="testimonial-card__author">
+            <div class="testimonial-card__avatar">MS</div>
+            <div>
+              <div class="testimonial-card__name">Marcelo Santos</div>
+              <div class="testimonial-card__role">Sócio-Proprietário · Distribuidora São Paulo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonials__logos">
+        <p>Empresas que já confiam na SupplyX</p>
+        <div class="logos-row">
+          <div class="logo-pill">METALÚRGICA+</div>
+          <div class="logo-pill">AGROIND</div>
+          <div class="logo-pill">QUÍMTECH</div>
+          <div class="logo-pill">STRUTURA</div>
+          <div class="logo-pill">PLÁSTICOS DO SUL</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       FAQ
+  =========================== -->
+  <section class="section faq" id="faq">
+    <div class="container">
+      <div class="faq__header">
+        <div class="section-eyebrow">Dúvidas frequentes</div>
+        <h2 class="section-heading">Tudo o que você precisa saber antes de começar.</h2>
+      </div>
+      <div class="faq__grid">
+        <div class="faq-item">
+          <h4>SupplyX é gratuito para empresas compradoras?</h4>
+          <p>Sim. O cadastro e a utilização básica da plataforma são totalmente gratuitos para empresas compradoras. Existem planos pagos com funcionalidades avançadas para operações de maior volume.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Como os fornecedores são verificados?</h4>
+          <p>Todos os fornecedores passam por verificação de CNPJ, análise de histórico comercial e avaliação contínua pelos compradores. Apenas fornecedores ativos e avaliados positivamente ficam visíveis na plataforma.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Meu pagamento está seguro?</h4>
+          <p>Sim. Utilizamos um sistema de pagamento com escrow: o valor só é liberado ao fornecedor após a confirmação de recebimento do produto pelo comprador. Nenhuma transação acontece sem proteção.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Em quanto tempo recebo respostas de cotação?</h4>
+          <p>O tempo médio é de 24 a 48 horas. Muitos fornecedores respondem em horas. Para produtos de alta demanda, você pode receber propostas em menos de 1 hora.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Posso comprar de qualquer estado do Brasil?</h4>
+          <p>Sim. A SupplyX opera em todo o território nacional. Você pode filtrar fornecedores por localidade para otimizar frete ou trabalhar com fornecedores de qualquer estado conforme sua necessidade.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Como funciona para quem quer vender na plataforma?</h4>
+          <p>Fornecedores podem se cadastrar, criar seu catálogo de produtos e começar a receber solicitações de cotação de centenas de empresas. O cadastro é simples e o processo de aprovação leva até 3 dias úteis.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       CTA SECTION
+  =========================== -->
+  <section class="cta-section" id="cta">
+    <div class="container">
+      <div class="cta-box">
+        <div class="cta-box__eyebrow">Comece hoje mesmo</div>
+        <h2 class="cta-box__heading">Sua indústria não pode<br/>esperar mais.</h2>
+        <p class="cta-box__sub">Crie sua conta gratuitamente e descubra em minutos por que centenas de empresas já escolheram SupplyX como sua central de compras industrial.</p>
+        <div class="cta-box__actions">
+          <a href="#" class="btn btn--accent btn--lg">
+            Criar conta gratuita agora
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#" class="btn btn--outline btn--lg">
+            Falar com um especialista
+          </a>
+        </div>
+        <div class="cta-box__reassurance">
+          <span>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Cadastro 100% gratuito
+          </span>
+          <span>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Sem cartão de crédito
+          </span>
+          <span>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Cancele quando quiser
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       FOOTER
+  =========================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="#" class="logo">
+            <div class="logo__mark">SX</div>
+            <span class="logo__text">Supply<span>X</span></span>
+          </a>
+          <p>O marketplace industrial que conecta empresas compradoras aos melhores fornecedores do Brasil com agilidade, segurança e inteligência.</p>
+          <div class="footer__socials">
+            <a href="#" class="social-icon">in</a>
+            <a href="#" class="social-icon">tw</a>
+            <a href="#" class="social-icon">ig</a>
+            <a href="#" class="social-icon">yt</a>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h4>Plataforma</h4>
+          <ul class="footer__links">
+            <li><a href="#">Como funciona</a></li>
+            <li><a href="#">Para compradores</a></li>
+            <li><a href="#">Para fornecedores</a></li>
+            <li><a href="#">Planos e preços</a></li>
+            <li><a href="#">API para empresas</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Empresa</h4>
+          <ul class="footer__links">
+            <li><a href="#">Sobre nós</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Carreiras</a></li>
+            <li><a href="#">Imprensa</a></li>
+            <li><a href="#">Contato</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Suporte</h4>
+          <ul class="footer__links">
+            <li><a href="#">Central de ajuda</a></li>
+            <li><a href="#">Documentação</a></li>
+            <li><a href="#">Status da plataforma</a></li>
+            <li><a href="#">Comunidade</a></li>
+            <li><a href="#">Falar com suporte</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2026 SupplyX. Todos os direitos reservados.</p>
+        <div class="footer__bottom-links">
+          <a href="#">Termos de Uso</a>
+          <a href="#">Política de Privacidade</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===========================
+       SCRIPTS
+  =========================== -->
+  <script>
+    // Header scroll effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Intersection Observer for fade-in animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Apply to cards and sections
+    const animatables = document.querySelectorAll(
+      '.feature-card, .how__step, .problem__item, .testimonial-card, .faq-item, .audience-card, .benefit-item'
+    );
+
+    animatables.forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = `opacity 0.5s ease ${i * 0.05}s, transform 0.5s ease ${i * 0.05}s`;
+      observer.observe(el);
+    });
+
+    // Animated counter for stats
+    function animateCounter(el, target, suffix = '') {
+      let start = 0;
+      const duration = 1800;
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(eased * target);
+        el.textContent = (suffix === '%' || suffix === 'h')
+          ? current + suffix
+          : '+' + current.toLocaleString('pt-BR');
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const statValues = entry.target.querySelectorAll('.stat__value');
+          const targets = [5000, 2000, 48, 98];
+          const suffixes = ['', '', 'h', '%'];
+          statValues.forEach((el, i) => animateCounter(el, targets[i], suffixes[i]));
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    const statsBar = document.querySelector('.stats-bar__inner');
+    if (statsBar) statsObserver.observe(statsBar);
+  </script>
+
+</body>
+</html>
